@@ -1,5 +1,6 @@
-import { formatNumber } from '@dojo/framework/i18n/number';
+import * as Globalize from 'globalize';
 import { create, v } from '@dojo/framework/core/vdom';
+import rootI18n from '@dojo/framework/i18n/i18n';
 import i18n from '@dojo/framework/core/middleware/i18n';
 
 import * as css from '../styles/clock.m.css';
@@ -40,7 +41,7 @@ const factory = create({ i18n }).properties<ClockProperties>();
 
 export default factory(function Clock({ properties, middleware: { i18n } }) {
 	const { format } = i18n.localize(nlsBundle);
-	const { labelKey, size, date, locale } = properties();
+	const { labelKey, size, date, locale = rootI18n.locale } = properties();
 	const label = format(labelKey);
 	const radius = size / 2;
 
@@ -63,7 +64,7 @@ export default factory(function Clock({ properties, middleware: { i18n } }) {
 						x: `${x}`,
 						y: `${y + padding / 2}`
 					},
-					[formatNumber(i, locale)]
+					[Globalize(locale).formatNumber(i)]
 				)
 			);
 		}
